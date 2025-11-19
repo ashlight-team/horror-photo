@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <Type Name="UnrealMvvm_Impl::FBindingConfiguration">
+    <DisplayString Condition="Data == nullptr">Empty</DisplayString>
+    <DisplayString Condition="Data != nullptr">{{NumViewModels = {(unsigned int)((FBindingConfiguration::FHeader*)Data)->NumViewModels}, NumProperties = {(unsigned int)((FBindingConfiguration::FHeader*)Data)->NumProperties}}}</DisplayString>
+    <Expand>
+      <Item Name="Header" Condition="Data != nullptr">(FBindingConfiguration::FHeader*)Data</Item>
+      <Synthetic Name="ViewModels" Condition="Data != nullptr">
+        <DisplayString Condition="((FBindingConfiguration::FHeader*)Data)->NumViewModels == 0">Empty</DisplayString>
+        <DisplayString Condition="((FBindingConfiguration::FHeader*)Data)->NumViewModels != 0">Num = {(unsigned int)((FBindingConfiguration::FHeader*)Data)->NumViewModels}</DisplayString>
+        <Expand>
+          <ArrayItems>
+            <Size>((FBindingConfiguration::FHeader*)Data)->NumViewModels</Size>
+            <ValuePointer>(FResolvedViewModelEntry*)(Data + 8)</ValuePointer>
+          </ArrayItems>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="Properties" Condition="Data != nullptr">
+        <DisplayString Condition="((FBindingConfiguration::FHeader*)Data)->NumProperties == 0">Empty</DisplayString>
+        <DisplayString Condition="((FBindingConfiguration::FHeader*)Data)->NumProperties != 0">Num = {(unsigned int)((FBindingConfiguration::FHeader*)Data)->NumProperties}</DisplayString>
+        <Expand>
+          <ArrayItems>
+            <Size>((FBindingConfiguration::FHeader*)Data)->NumProperties</Size>
+            <ValuePointer>(FResolvedPropertyEntry*)(Data + ((FBindingConfiguration::FHeader*)Data)->PropertiesOffset)</ValuePointer>
+          </ArrayItems>
+        </Expand>
+      </Synthetic>
+    </Expand>
+  </Type>
+
+  <Type Name="UnrealMvvm_Impl::FViewModelPropertyReflection">
+    <Intrinsic Name="GetNameData" Expression="*(FName*)((((UnrealMvvm_Impl::FViewModelPropertyOperations*)Buffer.Pad)->Property)->NameData)" />
+    <DisplayString Condition="ContainerType == EPinContainerType::None">{PinCategoryType,en} {GetNameData()}, Optional: {Flags.IsOptional}</DisplayString>
+    <DisplayString Condition="ContainerType == EPinContainerType::Array">TArray&lt;{PinCategoryType,en}&gt; {GetNameData()}, Optional: {Flags.IsOptional}</DisplayString>
+    <DisplayString Condition="ContainerType == EPinContainerType::Set">TSet&lt;{PinCategoryType,en}&gt; {GetNameData()}, Optional: {Flags.IsOptional}</DisplayString>
+    <DisplayString Condition="ContainerType == EPinContainerType::Map">TMap&lt;{PinCategoryType,en}, {GetNameData()}, Optional: {Flags.IsOptional}</DisplayString>
+  </Type>
+
+  <Type Name="FViewModelPropertyBase">
+    <DisplayString>{*(FName*)NameData}</DisplayString>
+    <Expand>
+      <Item Name="Name">*(FName*)NameData</Item>
+    </Expand>
+  </Type>
+
+</AutoVisualizer>
