@@ -47,7 +47,7 @@ bool UInventoryComponent::AddItem(UItemDefinition* Def, int32 Amount)
 	return AddItemInstance(NewInst);
 }
 
-static inline bool CanMergeStacks(const UInventoryItemInstance* A, const UInventoryItemInstance* B)
+static inline bool CanMergeStacksInv(const UInventoryItemInstance* A, const UInventoryItemInstance* B)
 {
 	return A && B && A->IsIdenticalTo(B);
 }
@@ -65,7 +65,7 @@ UInventoryItemInstance* UInventoryComponent::AddOrGetItem(UItemDefinition* Def, 
 			Temp->StackCount = Amount;
 			Temp->InitFromInstance(Existing); 
 
-			if (CanMergeStacks(Existing, Temp))
+			if (CanMergeStacksInv(Existing, Temp))
 			{
 				if (!CanAccept(Def, Amount)) return nullptr;
 				Existing->StackCount += Amount;
@@ -104,7 +104,7 @@ bool UInventoryComponent::AddItemInstance(UInventoryItemInstance* Instance)
 
 	for (UInventoryItemInstance* Item : Items)
 	{
-		if (CanMergeStacks(Item, Instance))
+		if (CanMergeStacksInv(Item, Instance))
 		{
 			const float add = Instance->GetUnitWeight() * Instance->StackCount;
 			if ((GetCurrentWeight() + add) > MaxInventoryWeight + KINDA_SMALL_NUMBER)
