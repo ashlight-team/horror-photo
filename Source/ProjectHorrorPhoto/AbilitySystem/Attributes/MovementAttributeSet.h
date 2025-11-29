@@ -18,6 +18,10 @@ public:
 	FGameplayAttributeData WalkSpeed;
 	ATTRIBUTE_ACCESSORS(UMovementAttributeSet, WalkSpeed)
 
+	UPROPERTY(BlueprintReadOnly, Category="Movement", ReplicatedUsing=OnRep_RunSpeedAdditive)
+	FGameplayAttributeData RunSpeedAdditive;
+	ATTRIBUTE_ACCESSORS(UMovementAttributeSet, RunSpeedAdditive)
+
 	UPROPERTY(BlueprintReadOnly, Category="Movement", ReplicatedUsing=OnRep_JumpHeight)
 	FGameplayAttributeData JumpHeight;
 	ATTRIBUTE_ACCESSORS(UMovementAttributeSet, JumpHeight)
@@ -35,6 +39,9 @@ private:
 
 	UFUNCTION()
 	void OnRep_ItemDragCoefficient(const FGameplayAttributeData& OldValue) { GAMEPLAYATTRIBUTE_REPNOTIFY(UMovementAttributeSet, ItemDragCoefficient, OldValue); }
+
+	UFUNCTION()
+	void OnRep_RunSpeedAdditive(const FGameplayAttributeData& OldValue) { GAMEPLAYATTRIBUTE_REPNOTIFY(UMovementAttributeSet, RunSpeedAdditive, OldValue); }
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 };

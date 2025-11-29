@@ -11,4 +11,5 @@ void UMovementAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePro
 	DOREPLIFETIME_CONDITION_NOTIFY(UMovementAttributeSet, WalkSpeed, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UMovementAttributeSet, JumpHeight, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UMovementAttributeSet, ItemDragCoefficient, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UMovementAttributeSet, RunSpeedAdditive, COND_None, REPNOTIFY_Always);
 }

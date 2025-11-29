@@ -32,6 +32,8 @@ public:
 	FGameplayTag InputTag_RotateMode;
 	FGameplayTag InputTag_Rotate;
 	FGameplayTag InputTag_Interact;
+	FGameplayTag InputTag_Sprint;
+	FGameplayTag InputTag_Crouch;
 
 	FGameplayTag Ability_Input_WhileInputActive;
 	FGameplayTag Ability_Input_OnInputTriggered;
@@ -42,6 +44,8 @@ public:
 
 	FGameplayTag Status_Item_Dragging;
 	FGameplayTag Status_Item_Rotating;
+	FGameplayTag Status_Sprinting;
+	FGameplayTag Status_Crouching;
 
 	FGameplayTag Effect_Player_MoveSetInit;
 

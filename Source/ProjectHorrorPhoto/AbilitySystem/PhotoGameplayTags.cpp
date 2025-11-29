@@ -39,6 +39,8 @@ void FPhotoGameplayTags::AddAllTags(UGameplayTagsManager& Manager)
 	AddTag(InputTag_RotateMode, "InputTag.RotateMode", "Toggle rotate mode.");
 	AddTag(InputTag_Rotate, "InputTag.Rotate", "Rotate item.");
 	AddTag(InputTag_Interact, "InputTag.Interact", "Interact with item.");
+	AddTag(InputTag_Sprint, "InputTag.Sprint", "Sprint input.");
+	AddTag(InputTag_Crouch, "InputTag.Crouch", "Crouch input.");
 
 	AddTag(Ability_Input_OnInputTriggered, "Ability.Input.OnInputTriggered", "Test ability input.");
 	AddTag(Ability_Input_WhileInputActive, "Ability.Input.WhileInputActive", "Test ability input.");
@@ -49,6 +51,8 @@ void FPhotoGameplayTags::AddAllTags(UGameplayTagsManager& Manager)
 
 	AddTag(Status_Item_Dragging, "Status.Item.Dragging", "Status effect applied when dragging an item.");
 	AddTag(Status_Item_Rotating, "Status.Item.Rotating", "Status effect applied when rotating an item.");
+	AddTag(Status_Sprinting, "Status.Sprinting", "Status effect applied when sprinting.");
+	AddTag(Status_Crouching, "Status.Crouching", "Status effect applied when crouching.");
 
 	AddTag(Effect_Player_MoveSetInit, "Effect.Player.MoveSetInit", "Initial movement attribute set effect.");
 
