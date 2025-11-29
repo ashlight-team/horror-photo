@@ -22,7 +22,7 @@ void UTextureDisplayWidget::UpdateTextureDisplay(UTexture2D* NewTexture)
 {
 	if (ImageWidget)
 	{
-		if (NewTexture)
+		if (IsValid(NewTexture))
 		{
 			ImageWidget->SetBrushFromTexture(NewTexture);
 			ImageWidget->SetVisibility(ESlateVisibility::Visible);

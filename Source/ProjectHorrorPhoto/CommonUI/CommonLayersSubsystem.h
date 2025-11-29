@@ -30,6 +30,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "UI", meta = (WidgetClass = "/Script/CommonUI.CommonActivatableWidget", DeterminesOutputType = "WidgetClass"))
 	virtual UCommonActivatableWidget* PushWidgetToLayer_ForPlayer(APlayerController* OwningPlayer, UPARAM(meta = (Categories = "UI.Layer")) FGameplayTag Tag, TSubclassOf<UCommonActivatableWidget> WidgetClass);
+	
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	virtual void RegisterExtensionLayer(UPARAM(meta = (Categories = "UI.Widget")) FGameplayTag Tag, UExtensionWidget* Layer);

@@ -37,6 +37,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<class UCommonActivatableWidget> BasicHUDLayoutWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<class UContextMenu> ContextMenuWidgetClass;
+
 private:
 	virtual void BeginPlay() override;
 
@@ -109,4 +112,15 @@ private:
 	void OnRotateModePressed(const FInputActionValue& Value);
 
 	void OnRotateObject(const FInputActionValue& Value);
+
+	void OnTryToOpenContextMenuForLookTarget(const FInputActionValue& Value);
+
+	void OnCloseContextMenu(const FInputActionValue& Value);
+
+private:
+	UPROPERTY(meta=(AllowPrivateAccess = true))
+	float LookForwardTraceDistance = 500.0f;
+
+	UPROPERTY()
+	TObjectPtr<class UContextMenu> CachedContextMenu = nullptr;
 };

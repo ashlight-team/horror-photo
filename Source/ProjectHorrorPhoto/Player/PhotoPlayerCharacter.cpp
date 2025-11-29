@@ -17,9 +17,11 @@
 #include "ProjectHorrorPhoto/CommonUI/CommonLayersSubsystem.h"
 #include "ProjectHorrorPhoto/Components/Inventory/InventoryComponent.h"
 #include "ProjectHorrorPhoto/Components/Inventory/InventoryManipulatorComponent.h"
+#include "ProjectHorrorPhoto/Components/Inventory/Interfaces/ContextActionProvider.h"
 #include "ProjectHorrorPhoto/Components/Physics/Grabber.h"
 #include "ProjectHorrorPhoto/Useful/Useful.h"
 #include "ProjectHorrorPhoto/ViewModels/Inventory/InventoryHotbarViewModel.h"
+#include "ProjectHorrorPhoto/Widgets/ContextActions/ContextMenu.h"
 #include "ProjectHorrorPhoto/Widgets/Inventory/InventoryHotbar.h"
 
 APhotoPlayerCharacter::APhotoPlayerCharacter()
@@ -204,6 +206,12 @@ void APhotoPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	ISInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Rotate, ETriggerEvent::Triggered, this,
 	                                   &ThisClass::OnRotateObject);
 
+	ISInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Interact, ETriggerEvent::Started, this,
+	                                   &ThisClass::OnTryToOpenContextMenuForLookTarget);
+
+	ISInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Interact, ETriggerEvent::Completed, this,
+	                                   &ThisClass::OnCloseContextMenu);
+
 
 	TArray<FGameplayTag> HotbarTags = {
 		GameplayTags.InputTag_Hotbar_1,
@@ -280,5 +288,64 @@ void APhotoPlayerCharacter::OnRotateObject(const FInputActionValue& Value)
 			FVector2D RotateAxisVector = Value.Get<FVector2D>();
 			GrabberComp->Rotate(RotateAxisVector);
 		}
+	}
+}
+
+void APhotoPlayerCharacter::OnTryToOpenContextMenuForLookTarget(const FInputActionValue& Value)
+{
+	FHitResult HitResult;
+	FVector Start = CameraComponent->GetComponentLocation();
+	FVector End = Start + (CameraComponent->GetForwardVector() * LookForwardTraceDistance);
+
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, Params);
+	if (bHit)
+	{
+		if (AActor* HitActor = HitResult.GetActor())
+		{
+			IContextActionProvider* ContextActionProvider = Cast<IContextActionProvider>(HitActor);
+			if (ContextActionProvider)
+			{
+				// TODO: this fucking shit must be rewrited cuz it looks horrible
+				UContextMenuViewModel* ContextMenuViewModel = NewObject<UContextMenuViewModel>(this);
+				ContextMenuViewModel->InitData(HitActor, this);
+
+				if (!IsValid(CachedContextMenu))
+				{
+					UGameInstance* GameInstance = GetGameInstance();
+
+					UCommonLayersSubsystem* CommonLayersSubsystem = GameInstance->GetSubsystem<UCommonLayersSubsystem>();
+					if (CommonLayersSubsystem)
+					{
+						// TODO: if owner of pawn is not player controller then fuck epic games
+						UCommonActivatableWidget* ContextMenuActivatable = CommonLayersSubsystem->PushWidgetToLayer_ForPlayer(Cast<APlayerController>(GetOwner()), FPhotoGameplayTags::Get().UI_Layer_GameMenu, ContextMenuWidgetClass);
+						if (UContextMenu* ContextMenu = Cast<UContextMenu>(ContextMenuActivatable))
+						{
+							ContextMenu->SetViewModel(ContextMenuViewModel);
+							CachedContextMenu = ContextMenu;
+						}
+					}
+				}
+				else
+				{
+					CachedContextMenu->SetViewModel(ContextMenuViewModel);
+					CachedContextMenu->ActivateWidget();
+				}
+
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ContextMenu");
+			}
+		}
+	}
+}
+
+void APhotoPlayerCharacter::OnCloseContextMenu(const FInputActionValue& Value)
+{
+	if (IsValid(CachedContextMenu))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Close ContextMenu");
+		CachedContextMenu->SetViewModel(nullptr);
+		CachedContextMenu->DeactivateWidget();
+		CachedContextMenu = nullptr;
 	}
 }

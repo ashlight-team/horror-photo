@@ -31,6 +31,7 @@ public:
 	FGameplayTag InputTag_Hotbar_9;
 	FGameplayTag InputTag_RotateMode;
 	FGameplayTag InputTag_Rotate;
+	FGameplayTag InputTag_Interact;
 
 	FGameplayTag Ability_Input_WhileInputActive;
 	FGameplayTag Ability_Input_OnInputTriggered;

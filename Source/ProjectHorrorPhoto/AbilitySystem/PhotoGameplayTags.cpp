@@ -38,6 +38,7 @@ void FPhotoGameplayTags::AddAllTags(UGameplayTagsManager& Manager)
 	AddTag(InputTag_Hotbar_9, "InputTag.Hotbar.9", "Hotbar slot 9.");
 	AddTag(InputTag_RotateMode, "InputTag.RotateMode", "Toggle rotate mode.");
 	AddTag(InputTag_Rotate, "InputTag.Rotate", "Rotate item.");
+	AddTag(InputTag_Interact, "InputTag.Interact", "Interact with item.");
 
 	AddTag(Ability_Input_OnInputTriggered, "Ability.Input.OnInputTriggered", "Test ability input.");
 	AddTag(Ability_Input_WhileInputActive, "Ability.Input.WhileInputActive", "Test ability input.");
