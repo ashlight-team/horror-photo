@@ -304,8 +304,8 @@ void APhotoPlayerCharacter::OnTryToOpenContextMenuForLookTarget(const FInputActi
 	{
 		if (AActor* HitActor = HitResult.GetActor())
 		{
-			IContextActionProvider* ContextActionProvider = Cast<IContextActionProvider>(HitActor);
-			if (ContextActionProvider)
+			bool DoesImplement = HitActor->GetClass()->ImplementsInterface(UContextActionProvider::StaticClass());
+			if (DoesImplement)
 			{
 				// TODO: this fucking shit must be rewrited cuz it looks horrible
 				UContextMenuViewModel* ContextMenuViewModel = NewObject<UContextMenuViewModel>(this);
