@@ -40,4 +40,6 @@ private:
 	UPROPERTY()
 	TArray<UContextActionViewModel*> CachedActions;
 
+	virtual void NativeConstruct() override;
+
 };

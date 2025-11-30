@@ -84,3 +84,20 @@ void UContextMenu::ArrangeItems()
 		);
 	}
 }
+
+void UContextMenu::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	auto Tween = FCTween::Play(
+		0.f,
+		360.f,
+		[&] (float t)
+		{
+			RotationOffsetDegrees = t;
+			ArrangeItems();
+		},
+		5.f,
+		EFCEase::Linear);
+	Tween->SetLoops(-1);
+}
