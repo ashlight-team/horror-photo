@@ -104,7 +104,7 @@ public:
 	UPROPERTY()
 	AEquippedItemActor* EquippedVisual = nullptr;
 
-	FPhotoAbilitySet_GrantedHandles* EquippedGrantedHandles;
+	FPhotoAbilitySet_GrantedHandles EquippedGrantedHandles;
 
 	// grab/drag state
 	UPROPERTY(BlueprintReadOnly, Category="Grab")

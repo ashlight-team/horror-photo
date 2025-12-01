@@ -104,7 +104,7 @@ bool UInventoryManipulatorComponent::PutFromHandsToInventory()
 
 static inline bool SameType(const UInventoryItemInstance* A, const UInventoryItemInstance* B)
 {
-	return A && B && A->ItemDef == B->ItemDef;
+	return A->ItemDef == B->ItemDef;
 }
 
 static inline bool CanMergeStacks(const UInventoryItemInstance* A, const UInventoryItemInstance* B)
@@ -509,7 +509,7 @@ bool UInventoryManipulatorComponent::ActivateHotbarSlot(int32 SlotIndex)
 	}
 
 	// merge if same
-	if (CanMergeStacks(SlotItem, EquippedItem))
+	if (SlotItem->CanStackWith(EquippedItem))
 	{
 		if (!CanCarryItemInHotbar(EquippedItem))
 		{
@@ -725,7 +725,7 @@ void UInventoryManipulatorComponent::UpdateEquippedVisual()
 		UPhotoAbilitySystemComponent* ASC = UUseful::GetPhotoAbilitySystemComponent(GetOwner());
 		if (ASC && EquippedItem->ItemDef && EquippedItem->ItemDef->GrantedAbilitySet)
 		{
-			EquippedItem->ItemDef->GrantedAbilitySet->GiveToAbilitySystem(ASC, EquippedGrantedHandles);
+			EquippedItem->ItemDef->GrantedAbilitySet->GiveToAbilitySystem(ASC, &EquippedGrantedHandles);
 		}
 	}
 }
@@ -735,10 +735,9 @@ void UInventoryManipulatorComponent::DestroyEquippedVisual()
 	if (EquippedVisual)
 	{
 		UPhotoAbilitySystemComponent* ASC = UUseful::GetPhotoAbilitySystemComponent(GetOwner());
-		if (ASC && EquippedGrantedHandles)
+		if (ASC)
 		{
-			EquippedGrantedHandles->TakeFromAbilitySystem(ASC);
-			EquippedGrantedHandles = nullptr;
+			EquippedGrantedHandles.TakeFromAbilitySystem(ASC);
 		}
 
 		EquippedVisual->Destroy();
